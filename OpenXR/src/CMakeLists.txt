@@ -123,8 +123,9 @@ find_package(JsonCpp)
 
 ### All options defined here
 
-option(BUILD_LOADER "Build loader" OFF)
+
 if(ANDROID)
+ option(BUILD_LOADER "Build loader" OFF)
  add_library(openxr_loader SHARED IMPORTED)
  set_property(
       TARGET
@@ -133,7 +134,7 @@ if(ANDROID)
       IMPORTED_LOCATION
       C:/Users/suv/Documents/openxr_oculus_mobile_sdk_1014/OpenXR/Libs/Android/${ANDROID_ABI}/${CMAKE_BUILD_TYPE}/libopenxr_loader.so
   )
-elseif()
+else()
   option(BUILD_LOADER "Build loader" ON)
 endif()
 
@@ -152,10 +153,11 @@ else()
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    set(DYNAMIC_LOADER "Build the loader as a .dll library" OFF)
+    option(DYNAMIC_LOADER "Build the loader as a .dll library" OFF)
 else()
-    set(DYNAMIC_LOADER "Build the loader as a .dll library" ON)
+    option(DYNAMIC_LOADER "Build the loader as a .dll library" ON)
 endif()
+
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/api_layers/CMakeLists.txt")
     set(BUILD_API_LAYERS "Build API layers" ON)
 endif()

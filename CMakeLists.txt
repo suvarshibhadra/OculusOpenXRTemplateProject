@@ -10,3 +10,4 @@ endif()
 
 # Uncomment this next commit
 add_subdirectory(OpenXR)
+add_subdirectory(hello_xr)

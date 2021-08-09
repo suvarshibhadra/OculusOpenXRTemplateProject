@@ -17,7 +17,6 @@
 # Author:
 #
 
-add_subdirectory(hello_xr)
 if(NOT ANDROID)
     add_subdirectory(list)
     if(BUILD_LOADER)
