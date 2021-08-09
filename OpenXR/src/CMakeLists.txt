@@ -123,6 +123,19 @@ find_package(JsonCpp)
 
 ### All options defined here
 set(BUILD_LOADER "Build loader" ON)
+if (Android)
+  set(BUILD_LOADER "Build loader" OFF)
+  add_library(openxr_loader SHARED IMPORTED)
+  set_property(
+        TARGET
+        openxr_loader
+        PROPERTY
+        IMPORTED_LOCATION
+        C:/Users/suv/Documents/openxr_oculus_mobile_sdk_1014/OpenXR/Libs/Android/${ANDROID_ABI}/${CMAKE_BUILD_TYPE}/libopenxr_loader.so
+)
+endif()
+
+
 set(BUILD_ALL_EXTENSIONS "Build loader and layers with all extensions" OFF)
 set(
     BUILD_LOADER_WITH_EXCEPTION_HANDLING
