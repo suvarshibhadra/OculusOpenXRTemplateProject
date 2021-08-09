@@ -36,7 +36,7 @@ set(TESTS_FOLDER "OpenXR/Tests")
 set(API_LAYERS_FOLDER "OpenXR/Layers")
 set(SAMPLES_FOLDER "OpenXR/Samples")
 
-option(BUILD_FORCE_GENERATION "Force re-generation of files even in the presence of pre-generated copies, replacing those copies." OFF)
+set(BUILD_FORCE_GENERATION "Force re-generation of files even in the presence of pre-generated copies, replacing those copies." OFF)
 
 if(BUILD_FORCE_GENERATION AND NOT PYTHON_EXECUTABLE)
     message(FATAL_ERROR "BUILD_FORCE_GENERATION requires Python")
@@ -57,7 +57,7 @@ endif()
 
 find_program(BASH_COMMAND NAMES bash)
 if(BASH_COMMAND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/specification/Makefile")
-    option(BUILD_SPECIFICATION "Run './makeAllExts all' in the specification directory as part of the build - intended for one-step checking of spec changes" OFF)
+    set(BUILD_SPECIFICATION "Run './makeAllExts all' in the specification directory as part of the build - intended for one-step checking of spec changes" OFF)
     if(BUILD_SPECIFICATION)
         add_custom_target(spec-all ALL
             ${BASH_COMMAND} ./makeAllExts all

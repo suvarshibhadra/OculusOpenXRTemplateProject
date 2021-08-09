@@ -33,7 +33,7 @@ string(TOUPPER "${CMAKE_GENERATOR_PLATFORM}" CMAKE_GENERATOR_PLATFORM_UPPER)
 
 # Artifact organization
 if(WIN32)
-    option(INSTALL_TO_ARCHITECTURE_PREFIXES "Install platform-specific files to architecture-specific directories." OFF)
+    set(INSTALL_TO_ARCHITECTURE_PREFIXES "Install platform-specific files to architecture-specific directories." OFF)
     if(INSTALL_TO_ARCHITECTURE_PREFIXES)
         unset(_UWP_SUFFIX)
         if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
@@ -122,9 +122,9 @@ find_package(Threads REQUIRED)
 find_package(JsonCpp)
 
 ### All options defined here
-option(BUILD_LOADER "Build loader" ON)
-option(BUILD_ALL_EXTENSIONS "Build loader and layers with all extensions" OFF)
-option(
+set(BUILD_LOADER "Build loader" ON)
+set(BUILD_ALL_EXTENSIONS "Build loader and layers with all extensions" OFF)
+set(
     BUILD_LOADER_WITH_EXCEPTION_HANDLING
     "Enable exception handling in the loader. Leave this on unless your standard library is built to not throw."
     ON
@@ -137,18 +137,18 @@ else()
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    option(DYNAMIC_LOADER "Build the loader as a .dll library" OFF)
+    set(DYNAMIC_LOADER "Build the loader as a .dll library" OFF)
 else()
-    option(DYNAMIC_LOADER "Build the loader as a .dll library" ON)
+    set(DYNAMIC_LOADER "Build the loader as a .dll library" ON)
 endif()
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/api_layers/CMakeLists.txt")
-    option(BUILD_API_LAYERS "Build API layers" ON)
+    set(BUILD_API_LAYERS "Build API layers" ON)
 endif()
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt")
-    option(BUILD_TESTS "Build tests" ON)
+    set(BUILD_TESTS "Build tests" OFF)
 endif()
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/conformance/CMakeLists.txt")
-    option(BUILD_CONFORMANCE_TESTS "Build conformance tests" ON)
+    set(BUILD_CONFORMANCE_TESTS "Build conformance tests" OFF)
 endif()
 include(CMakeDependentOption)
 
