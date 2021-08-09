@@ -9,4 +9,4 @@ if(POLICY CMP0075)
 endif()
 
 # Uncomment this next commit
-#add_subdirectory(OpenXR)
+add_subdirectory(OpenXR)
