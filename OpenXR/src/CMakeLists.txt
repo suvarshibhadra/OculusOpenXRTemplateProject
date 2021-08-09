@@ -215,6 +215,7 @@ if((OPENGL_FOUND OR OpenGLES_FOUND) AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/comm
         target_compile_options(android_native_app_glue PRIVATE -Wno-unused-parameter)
     endif()
     message(STATUS "Enabling OpenGL support in hello_xr, loader_test, and conformance, if configured")
+	set_target_properties(openxr-gfxwrapper PROPERTIES FOLDER "OpenXR")
 endif()
 
 # Determine the presentation backend for Linux systems.

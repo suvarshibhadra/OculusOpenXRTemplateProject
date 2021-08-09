@@ -29,12 +29,12 @@ find_package(PythonInterp 3)
 # Enable IDE GUI folders.  "Helper targets" that don't have interesting source code should set their FOLDER property to this
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMake predefined targets")
-set(LOADER_FOLDER "Loader")
-set(HELPER_FOLDER "Helpers")
-set(CODEGEN_FOLDER "Generated")
-set(TESTS_FOLDER "Tests")
-set(API_LAYERS_FOLDER "Layers")
-set(SAMPLES_FOLDER "Samples")
+set(LOADER_FOLDER "OpenXR/Loader")
+set(HELPER_FOLDER "OpenXR/Helpers")
+set(CODEGEN_FOLDER "OpenXR/Generated")
+set(TESTS_FOLDER "OpenXR/Tests")
+set(API_LAYERS_FOLDER "OpenXR/Layers")
+set(SAMPLES_FOLDER "OpenXR/Samples")
 
 option(BUILD_FORCE_GENERATION "Force re-generation of files even in the presence of pre-generated copies, replacing those copies." OFF)
 
@@ -65,6 +65,7 @@ if(BASH_COMMAND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/specification/Makefile")
             VERBATIM
             COMMENT "Running './makeAllExts all' in the specification directory"
             USES_TERMINAL)
+		set_target_properties(spec-all PROPERTIES FOLDER "OpenXR")
     endif()
 endif()
 
