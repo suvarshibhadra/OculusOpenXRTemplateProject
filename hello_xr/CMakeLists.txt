@@ -17,6 +17,58 @@
 # Author:
 #
 
+set(HELPER_FOLDER "OpenXR/Helpers")
+
+# Several files use these compile time platform switches
+if(WIN32)
+    add_definitions(-DXR_USE_PLATFORM_WIN32)
+elseif(ANDROID)
+    add_definitions(-DXR_USE_PLATFORM_ANDROID)
+elseif(PRESENTATION_BACKEND MATCHES "xlib")
+    add_definitions(-DXR_USE_PLATFORM_XLIB)
+elseif(PRESENTATION_BACKEND MATCHES "xcb")
+    add_definitions(-DXR_USE_PLATFORM_XCB)
+
+    # TODO remove once conformance supports XCB
+    set(BUILD_CONFORMANCE_TESTS OFF)
+elseif(PRESENTATION_BACKEND MATCHES "wayland")
+    add_definitions(-DXR_USE_PLATFORM_WAYLAND)
+
+    # TODO remove once conformance supports Wayland
+    set(BUILD_CONFORMANCE_TESTS OFF)
+endif()
+
+set(VULKAN_INCOMPATIBLE FALSE)
+if(NOT VULKAN_INCOMPATIBLE)
+    if(NOT CMAKE_VERSION VERSION_LESS 3.7.0)
+        # Find the Vulkan headers
+        find_package(Vulkan)
+    endif()
+    if(Vulkan_FOUND)
+        add_definitions(-DXR_USE_GRAPHICS_API_VULKAN)
+        message(STATUS "Enabling Vulkan support")
+    elseif(BUILD_ALL_EXTENSIONS)
+        message(FATAL_ERROR "Vulkan headers not found")
+    endif()
+endif()
+
+if(ANDROID)
+ option(BUILD_LOADER "Build loader" OFF)
+ add_library(openxr_loader SHARED IMPORTED)
+ set_property(
+      TARGET
+      openxr_loader
+      PROPERTY
+      IMPORTED_LOCATION
+      C:/Users/suv/Documents/openxr_oculus_mobile_sdk_1014/OpenXR/Libs/Android/${ANDROID_ABI}/${CMAKE_BUILD_TYPE}/libopenxr_loader.so
+  )
+else()
+  option(BUILD_LOADER "Build loader" ON)
+endif()
+
+
+####
+
 file(GLOB LOCAL_HEADERS "*.h")
 file(GLOB LOCAL_SOURCE "*.cpp")
 file(GLOB VULKAN_SHADERS "vulkan_shaders/*.glsl")
@@ -37,7 +89,6 @@ else()
         ${LOCAL_HEADERS}
         ${VULKAN_SHADERS})
 endif()
-set_target_properties(hello_xr PROPERTIES FOLDER ${SAMPLES_FOLDER})
 
 source_group("Headers" FILES ${LOCAL_HEADERS})
 source_group("Shaders" FILES ${VULKAN_SHADERS})
@@ -51,15 +102,15 @@ add_dependencies(hello_xr
 
 target_include_directories(hello_xr
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/src
-    ${PROJECT_SOURCE_DIR}/src/common
+    ${PROJECT_SOURCE_DIR}/${OPENXR_ROOT_DIRECTORY}/src
+    ${PROJECT_SOURCE_DIR}/${OPENXR_ROOT_DIRECTORY}/src/common
 
     # for OpenXR headers
-    ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/${OPENXR_ROOT_DIRECTORY}/include
+    ${PROJECT_BINARY_DIR}/${OPENXR_ROOT_DIRECTORY}/include
 
     # for helper headers
-    ${PROJECT_SOURCE_DIR}/external/include
+    ${PROJECT_SOURCE_DIR}/${OPENXR_ROOT_DIRECTORY}/external/include
 )
 
 if(GLSLANG_VALIDATOR AND NOT GLSLC_COMMAND)
@@ -74,6 +125,7 @@ if(Vulkan_FOUND)
 endif()
 
 target_link_libraries(hello_xr openxr_loader)
+
 if(TARGET openxr-gfxwrapper)
     target_link_libraries(hello_xr openxr-gfxwrapper)
 endif()
