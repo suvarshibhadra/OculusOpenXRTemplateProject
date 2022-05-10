@@ -18,7 +18,7 @@ Essentially, the whole rigmarole is because the OpenXR Android Loader doesn't wo
 One day this setup will be as easy as Rift.
 
 ### Requirements:
-   1. Download and install the Vulkan SDK: https://vulkan.lunarg.com/doc/view/1.1.121.2/windows/getting_started.html
+   1. Download and install the Vulkan SDK: https://vulkan.lunarg.com/doc/view/1.1.121.2/windows/getting_started.html . Ensure VULKAN_SDK environment variable is set to the installation direction `C:\VulkanSDK\1.3.4` (whatever the version is) 
    2. Setup Android Studio per instructions here: https://developer.oculus.com/documentation/native/android/mobile-studio-basics/
    3. Download the Oculus OpenXR Mobile SDK here: https://developer.oculus.com/downloads/package/oculus-openxr-mobile-sdk/ 
    4. Download all the files in this project
@@ -39,6 +39,7 @@ custom OpenXR loader library provided by Oculus. This is found inside the Oculus
 Oculus Quest hardware
 4. Download the Oculus OpenXR Mobile SDK. Extract the zip to a reasonable location, eg (C:\ovr_openxr_mobile_sdk_1.0.13). Create an environment variable called OCULUS_OPENXR_MOBILE_SDK and set it to the path to this directory. 
 5. Clone or download OpenXR SDK Source from the OpenXR SDK Source GitHub repository to a reasonable location on your local machine
+6. If you haven't already, download and install the Vulkan SDK: https://vulkan.lunarg.com/doc/view/1.1.121.2/windows/getting_started.html . Ensure VULKAN_SDK environment variable is set to the installation direction `C:\VulkanSDK\1.3.4` (whatever the version is).
 
 ## Setup Rift 
 1. Point CMAKE to CMake.lists at root of project.
@@ -66,9 +67,10 @@ Oculus Quest hardware
 		2. Click File > New Project. Name the project to be your project name. Save it in some arbitrary location.
 		3. Select No Activity Template
 		4. For Language: Java. Min SDK put in 24 and hit Finish
-		5. Copy all the files of newly created project into top-level of your cloned project - overriding files as necessary.
+		5. Copy all the files at the root of the newly created project into the root of your cloned project - overriding files as necessary.
 		6. In Android Studio, in the project explorer pane, right click on the app-module and select 'Add C++ to Module'
 		7. Select "Link an existing CMakeLists.txt" and find the root CMakeLists.txt om the project7. In app/build.gradle verify this adds the following:	    
+
 	    ```	    
 		    externalNativeBuild {
 			    cmake {
@@ -77,7 +79,9 @@ Oculus Quest hardware
 			    }
 			}
 	    ```
-	    8. In app/build.gradle under `default_config`  add
+	   
+	   8. In app/build.gradle under `default_config`  add
+	   
 	    ```
 	    default_config {
 	      ...
@@ -92,7 +96,9 @@ Oculus Quest hardware
 	      ...            
 	    }
 	    ```
-	    9. From Project View in `app/src/main/AndroidManifest.xml` add
+	    
+		9. From Project View in `app/src/main/AndroidManifest.xml` add
+		
 	    ```
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -123,8 +129,9 @@ Oculus Quest hardware
 </manifest>
 	    ```
 	   10. Select Edit -> Find -> Replace in Files Search and Replace: **hello_xr** w/ your project name
-	   11. Run your app from Android Studio by `Shift+F10`. You should see the `hello_xr` sample app shared in the Khronos OpenXR SDK-Source repo.
-	   12. Modify main.cpp in `hello_xr\src` to start to customize your Vulkan app
+	   11. Run `adb shell setprop debug.xr.graphicsPlugin Vulkan` from terminal
+	   12 Run your app from Android Studio by `Shift+F10`. You should see the `hello_xr` sample app shared in the Khronos OpenXR SDK-Source repo.
+	   13. Modify main.cpp in `hello_xr\src` to start to customize your Vulkan app
 
 ### License
 The blank/template/starter app is the `hello_xr` sample from Khronos and is governed by their license here https://github.com/KhronosGroup/OpenXR-SDK-Source/blob/master/LICENSE. 
